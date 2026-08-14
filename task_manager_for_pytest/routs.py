@@ -25,7 +25,7 @@ def get_tasks():
 def update_status(task_id: int, task_status: bool):
     if task_id in fake_db:
         fake_db[task_id]["task_status"] = task_status
-        return fake_db[task_status]
+        return fake_db[task_id]
     else:
         raise HTTPException(status_code=404, detail="id not found")
     
