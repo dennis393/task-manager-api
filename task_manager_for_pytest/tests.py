@@ -17,7 +17,45 @@ def reset_db(autouse=True): #Фикстура которая очищает ба
         1: {"task_id": 1, "task_name": "Изучить FastAPI", "task_status": False},
         2: {"task_id": 2, "task_name": "Порешать задачи на LeetCode", "task_status": True}
     }) #Приводим базу в первоначальное состояние
+
+
+#Маркеры используются для того, чтобы помечать тесты тегами
+#skip полностью пропустит тест
+@pytest.mark.skip(reason="Этот эндпоинт еще не готов")
+def test_post(client):
+    responce = client.get("/Get_tasks") #Отправляем запрос get к эндпоинту который отвечает за возврат задач
+    assert responce.status_code == 200 #Проверка, что сервер вернул статус 200
+    assert responce.json() == {
+    "1": {"task_id": 1, "task_name": "Изучить FastAPI", "task_status": False},
+    "2": {"task_id": 2, "task_name": "Порешать задачи на LeetCode", "task_status": True}
+} #Проверяем что сервер вернул JSON точно такого же формата как написан у меня
     
+   
+#skipif пропустит тест, если услолвие True
+#Например @pytest.mark.skipif(sys.platform == "win32", reason="Не работает на windows")
+@pytest.mark.skipif(True, reason="Причина")
+def test_post(client):
+    responce = client.get("/Get_tasks") #Отправляем запрос get к эндпоинту который отвечает за возврат задач
+    assert responce.status_code == 200 #Проверка, что сервер вернул статус 200
+    assert responce.json() == {
+    "1": {"task_id": 1, "task_name": "Изучить FastAPI", "task_status": False},
+    "2": {"task_id": 2, "task_name": "Порешать задачи на LeetCode", "task_status": True}
+} #Проверяем что сервер вернул JSON точно такого же формата как написан у меня   
+
+#xFail ожидаемо падает и Pytest не считает это ошибкой
+@pytest.mark.xfail(reason="баг в удалении задачи пока не починили")
+def test_delete(client):
+    responce = client.delete("/Delete_task/99")
+    assert responce.status_code == 200 #Проверяем что сервер возвращаеи 200 статус
+    assert responce.json() == {"msg": "Задача успешно удалена"}
+    
+
+
+
+
+
+
+"""    
 def test_get_list_tasks(client): #Тестирование метода GET
 
     responce = client.get("/Get_tasks") #Отправляем запрос get к эндпоинту который отвечает за возврат задач
@@ -43,7 +81,7 @@ def test_delete_task(client): #Тестирование метода Delete
     responce = client.delete("/Delete_task/1")
     assert responce.status_code == 200 #Проверяем что сервер возвращаеи 200 статус
     assert responce.json() == {"msg": "Задача успешно удалена"}
-"""
+
 
 client = TestClient(app)
 
