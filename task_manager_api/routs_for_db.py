@@ -93,8 +93,8 @@ def delete_task(id: int, current_user = Depends(get_curr_user)):
     if task_for_del is None:
         return "Задача не найдена"
     
-    if task.user_id != current_user.id:
-        raise HTTPexception(status_code=403, detail="Нет доступа")
+    if task_for_del.user_id != current_user.id:
+        raise HTTPException(status_code=403, detail="Нет доступа")
     data_base.delete(task_for_del)
     result = f"Задача под номером {task_for_del.id} удалена"
     data_base.commit()

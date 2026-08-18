@@ -1,6 +1,6 @@
-'''
+
 import secrets
-'''
+
 from datetime import datetime, timedelta
 from typing import Optional, Annotated
 from fastapi import Depends, HTTPException, status
@@ -20,9 +20,9 @@ load_dotenv()
 SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = os.getenv("ALGORITHM")
 LIVE_MINUTS_TOKEN = os.getenv("LIVE_MINUTS_TOKEN")
-'''
+
 print(secrets.token_hex(32))
-'''
+
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
