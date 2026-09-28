@@ -62,11 +62,11 @@ def create_task(title: str, status: bool, current_user = Depends(get_curr_user))
        
 
 @router.get("/Task")     
-def get_list_tasks():
-        data_base = sessionlocal()
-        tasks = data_base.query(Task).all()
-        data_base.close()
-        return tasks
+def get_list_tasks(current_user = Depends(get_curr_user)):
+    data_base = sessionlocal()
+    tasks = data_base.query(Task).filter(Task.user_id == current_user.id).all()
+    data_base.close()
+    return tasks
 
 #Роутер обновления статуса задачи если пользователь аутентифицирован, конкретный пользователь
 #Может изменить статус только у своей задачи
